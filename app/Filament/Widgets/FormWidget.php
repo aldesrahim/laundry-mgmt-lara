@@ -2,8 +2,8 @@
 
 namespace App\Filament\Widgets;
 
-use App\Filament\Standalone\StandaloneForm;
 use App\Filament\Standalone\StandaloneEdit;
+use App\Filament\Standalone\StandaloneForm;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Widgets\Widget;
 

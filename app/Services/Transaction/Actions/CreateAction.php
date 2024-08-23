@@ -14,7 +14,7 @@ class CreateAction
     public const SPARE_HOURS = 4;
 
     public function __construct(
-        protected AddToQueue $queue,
+        protected AddToQueue             $queue,
         protected CalculateCriticalRatio $calculation,
     ) {
     }

@@ -5,7 +5,7 @@ namespace App\Services\ReportTemplate\Components\Table;
 class Summary
 {
     public function __construct(
-        protected string $title,
+        protected string       $title,
         protected array|string $value,
     ) {
     }

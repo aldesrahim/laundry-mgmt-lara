@@ -8,7 +8,7 @@ class Text extends Component
 
     public function __construct(
         protected ?string $text = '',
-        protected array $classes = ['my-0.5'],
+        protected array   $classes = ['my-0.5'],
     ) {
         $this->data = [
             'text' => $this->text,

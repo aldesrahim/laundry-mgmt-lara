@@ -16,6 +16,7 @@ use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
+use Throwable;
 
 class ManageQueue extends Page implements HasTable, HasActions
 {
@@ -99,7 +100,7 @@ class ManageQueue extends Page implements HasTable, HasActions
             );
 
             DB::commit();
-        } catch (\Throwable $exception) {
+        } catch (Throwable $exception) {
             DB::rollBack();
 
             Notification::make()

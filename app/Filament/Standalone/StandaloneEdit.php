@@ -8,9 +8,9 @@ use Livewire\Attributes\On;
 trait StandaloneEdit
 {
     /**
+     * @param array<string, mixed> $extraData
      * @internal Never override or call this method. If you completely override `fillForm()`, copy the contents of this method into your override.
      *
-     * @param  array<string, mixed>  $extraData
      */
     protected function fillFormWithDataAndCallHooks(Model $record, array $extraData = []): void
     {
@@ -27,7 +27,7 @@ trait StandaloneEdit
     }
 
     /**
-     * @param  array<string, mixed>  $data
+     * @param array<string, mixed> $data
      * @return array<string, mixed>
      */
     protected function mutateFormDataBeforeFill(array $data): array

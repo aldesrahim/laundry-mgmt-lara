@@ -17,7 +17,7 @@ class InlineDeleteAction extends DeleteAction
             try {
                 $result = $this->process(static fn (Model $record) => $record->delete());
 
-                if (! $result) {
+                if (!$result) {
                     $this->failure();
 
                     return;
