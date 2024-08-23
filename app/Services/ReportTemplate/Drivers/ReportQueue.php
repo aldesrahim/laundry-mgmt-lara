@@ -79,15 +79,15 @@ class ReportQueue extends Driver
                 new Table\Column('Urutan', 'order'),
                 new Table\Column('Dibuat Oleh', 'user.name'),
             ],
-            content: $this->getQuery()->cursor(),
+            content: static::getQuery($this->payload)->cursor(),
         );
     }
 
-    public function getQuery(): Builder
+    public static function getQuery(array $payload): Builder
     {
         $dates = [
-            $this->payload['from_date'],
-            $this->payload['until_date'],
+            $payload['from_date'],
+            $payload['until_date'],
         ];
 
         return Queue::query()
@@ -95,8 +95,8 @@ class ReportQueue extends Driver
             ->with(['transaction.service', 'user'])
             ->join('transactions', 'transactions.id', 'queues.transaction_id')
             ->when(
-                $this->payload['status'] !== Status::All,
-                fn (Builder $query) => $query->where('finished', $this->payload['status'] === Status::Finished)
+                $payload['status'] !== Status::All,
+                fn (Builder $query) => $query->where('finished', $payload['status'] === Status::Finished)
             )
             ->where(
                 fn (Builder $query) => $query

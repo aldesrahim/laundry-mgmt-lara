@@ -60,7 +60,8 @@ class ReportTransaction extends Driver
 
     public function getTableBlock(): Table
     {
-        $total = $this->getQuery()->clone()->sum('total');
+        $query = static::getQuery($this->payload);
+        $total = $query->clone()->sum('total');
 
         return new Table(
             columns: [
@@ -74,7 +75,7 @@ class ReportTransaction extends Driver
                 (new Table\Column('Total', 'total'))->formatUsing(fn ($value) => Number::currency($value, 'idr')),
                 new Table\Column('Dibuat Oleh', 'user.name'),
             ],
-            content: $this->getQuery()->cursor(),
+            content: $query->cursor(),
             summaries: [
                 new Table\Summary('Total', [
                     Number::currency($total, 'idr'),
@@ -84,11 +85,11 @@ class ReportTransaction extends Driver
         );
     }
 
-    public function getQuery(): Builder
+    public static function getQuery(array $payload): Builder
     {
         $dates = [
-            $this->payload['from_date'],
-            $this->payload['until_date'],
+            $payload['from_date'],
+            $payload['until_date'],
         ];
 
         return Transaction::query()

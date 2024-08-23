@@ -4,8 +4,10 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ServiceResource\Pages;
 use App\Models\Service;
+use App\Services\Service\Actions\DeleteAction;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -90,7 +92,19 @@ class ServiceResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\DeleteAction::make()
+                    ->using(function (Service $record) {
+                        try {
+                            return app(DeleteAction::class)->handle($record);
+                        } catch (\Throwable $exception) {
+                            Notification::make()
+                                ->danger()
+                                ->title($exception->getMessage())
+                                ->send();
+                        }
+
+                        return false;
+                    }),
             ]);
     }
 

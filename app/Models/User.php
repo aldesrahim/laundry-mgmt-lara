@@ -42,4 +42,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Transaction::class);
     }
+
+    public function queues(): HasMany
+    {
+        return $this->hasMany(Queue::class);
+    }
 }

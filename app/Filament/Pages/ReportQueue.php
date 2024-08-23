@@ -3,12 +3,14 @@
 namespace App\Filament\Pages;
 
 use App\Services\Queue\Status;
+use App\Services\ReportTemplate\Drivers\ReportQueue as ReportQueueTemplate;
 use Filament\Actions\Action;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Pages\Concerns\InteractsWithFormActions;
 use Filament\Pages\Page;
 
@@ -72,6 +74,17 @@ class ReportQueue extends Page implements HasForms
     {
         $state = $this->form->getState();
 
-        return redirect()->route('report', ['driver' => 'queue', ...$state]);
+        $exists = ReportQueueTemplate::getQuery($state)->exists();
+
+        if (!$exists) {
+            Notification::make()
+                ->danger()
+                ->title('Tidak ada data')
+                ->send();
+
+            return;
+        }
+
+        redirect()->route('report', ['driver' => 'queue', ...$state]);
     }
 }

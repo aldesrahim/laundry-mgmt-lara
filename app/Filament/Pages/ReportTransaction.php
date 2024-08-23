@@ -2,11 +2,13 @@
 
 namespace App\Filament\Pages;
 
+use App\Services\ReportTemplate\Drivers\ReportTransaction as ReportTransactionTemplate;
 use Filament\Actions\Action;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Pages\Concerns\InteractsWithFormActions;
 use Filament\Pages\Page;
 
@@ -66,6 +68,17 @@ class ReportTransaction extends Page implements HasForms
     {
         $state = $this->form->getState();
 
-        return redirect()->route('report', ['driver' => 'transaction', ...$state]);
+        $exists = ReportTransactionTemplate::getQuery($state)->exists();
+
+        if (!$exists) {
+            Notification::make()
+                ->danger()
+                ->title('Tidak ada data')
+                ->send();
+
+            return;
+        }
+
+        redirect()->route('report', ['driver' => 'transaction', ...$state]);
     }
 }
