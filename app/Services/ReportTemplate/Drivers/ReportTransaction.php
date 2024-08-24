@@ -95,7 +95,7 @@ class ReportTransaction extends Driver
         return Transaction::query()
             ->selectRaw('transactions.*')
             ->with(['service', 'user', 'queue'])
-            ->join('queues', 'queues.transaction_id', 'transactions.id')
+            ->leftJoin('queues', 'queues.transaction_id', 'transactions.id')
             ->where(
                 fn (Builder $query) => $query
                     ->whereBetween(DB::raw('DATE(`transactions`.`date`)'), $dates)
